@@ -43,6 +43,7 @@ const kTests: TestConfig[] = [
 
 let adapter: GPUAdapter;
 let device: GPUDevice;
+let markdown_results: string;
 
 const status_label = document.getElementById("status");
 function SetStatus(status: string) {
@@ -62,6 +63,9 @@ async function Run() {
     SetStatus("Failed to create WebGPU device.");
     return;
   }
+
+  markdown_results = "| Name | Expected | Got | Pass/Fail |\n";
+  markdown_results += "| --- | --- | --- | --- |";
 
   kTests.forEach((cfg: TestConfig) => {
     RunTest(cfg);
@@ -149,6 +153,13 @@ fn main(@builtin(global_invocation_id) gid: vec3u) {
   row += `<td style="color: ${passed ? "green" : "red"}">${passed ? "Pass" : "Fail"}</td>`;
   row += "</tr>";
   table.innerHTML += row;
+
+  markdown_results += `\n| ${cfg.name} | ${cfg.expected} | ${got} | ${passed ? "Pass" : "Fail"} |`;
 }
+
+document.getElementById("copy-results").addEventListener("click", () => {
+  navigator.clipboard.writeText(markdown_results);
+  document.getElementById("copied").style.display = "";
+});
 
 Run();
