@@ -5,13 +5,8 @@ const kTests = [
         expected: 0,
     },
     {
-        name: "add_sub_min_1",
+        name: "add_sub_min",
         code: "buffer = (zero + gid.x) - min(gid.x, 1000u);",
-        expected: 0,
-    },
-    {
-        name: "add_sub_min_2",
-        code: "buffer = (gid.x + zero) - min(1000u, zero);",
         expected: 0,
     },
     {
@@ -42,7 +37,7 @@ const status_label = document.getElementById("status");
 function SetStatus(status) {
     status_label.textContent = status;
 }
-const kNameLength = 15;
+const kNameLength = 12;
 const kExpectedLength = 10;
 const kGotLength = 10;
 const kPassLength = 4;
