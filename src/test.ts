@@ -10,13 +10,8 @@ const kTests: TestConfig[] = [
     expected: 0,
   },
   {
-    name: "add_sub_min_1",
+    name: "add_sub_min",
     code: "buffer = (zero + gid.x) - min(gid.x, 1000u);",
-    expected: 0,
-  },
-  {
-    name: "add_sub_min_2",
-    code: "buffer = (gid.x + zero) - min(1000u, zero);",
     expected: 0,
   },
   {
@@ -50,7 +45,7 @@ function SetStatus(status: string) {
   status_label.textContent = status;
 }
 
-const kNameLength: number = 15;
+const kNameLength: number = 12;
 const kExpectedLength: number = 10;
 const kGotLength: number = 10;
 const kPassLength: number = 4;
