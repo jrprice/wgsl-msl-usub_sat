@@ -42,6 +42,10 @@ const status_label = document.getElementById("status");
 function SetStatus(status) {
     status_label.textContent = status;
 }
+const kNameLength = 15;
+const kExpectedLength = 10;
+const kGotLength = 10;
+const kPassLength = 4;
 async function Run() {
     SetStatus("Initializing...");
     if (!navigator.gpu) {
@@ -54,8 +58,8 @@ async function Run() {
         SetStatus("Failed to create WebGPU device.");
         return;
     }
-    markdown_results = "| Name | Expected | Got | Pass/Fail |\n";
-    markdown_results += "| --- | --- | --- | --- |";
+    markdown_results = `| ${"Name".padEnd(kNameLength)} | ${"Expected".padEnd(kExpectedLength)} | ${"Got".padEnd(kGotLength)} | ${"Pass".padEnd(kPassLength)} |\n`;
+    markdown_results += `| ${"-".repeat(kNameLength)} | ${"-".repeat(kExpectedLength)} | ${"-".repeat(kGotLength)} | ${"-".repeat(kPassLength)} |`;
     kTests.forEach((cfg) => {
         RunTest(cfg);
     });
@@ -131,10 +135,14 @@ fn main(@builtin(global_invocation_id) gid: vec3u) {
     row += `<td style="color: ${passed ? "green" : "red"}">${passed ? "Pass" : "Fail"}</td>`;
     row += "</tr>";
     table.innerHTML += row;
-    markdown_results += `\n| ${cfg.name} | ${cfg.expected} | ${got} | ${passed ? "Pass" : "Fail"} |`;
+    markdown_results += `\n| ${cfg.name.padEnd(kNameLength)} | ${cfg.expected
+        .toString()
+        .padEnd(kExpectedLength)} | ${got.toString().padEnd(kGotLength)} | ${(passed
+        ? "Pass"
+        : "FAIL").padEnd(kPassLength)} |`;
 }
 document.getElementById("copy-results").addEventListener("click", () => {
-    navigator.clipboard.writeText(markdown_results);
+    navigator.clipboard.writeText("```\n" + markdown_results + "\n```");
     document.getElementById("copied").style.display = "";
 });
 Run();
