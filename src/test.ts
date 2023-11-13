@@ -50,6 +50,11 @@ function SetStatus(status: string) {
   status_label.textContent = status;
 }
 
+const kNameLength: number = 15;
+const kExpectedLength: number = 10;
+const kGotLength: number = 10;
+const kPassLength: number = 4;
+
 async function Run() {
   SetStatus("Initializing...");
   if (!navigator.gpu) {
@@ -64,8 +69,12 @@ async function Run() {
     return;
   }
 
-  markdown_results = "| Name | Expected | Got | Pass/Fail |\n";
-  markdown_results += "| --- | --- | --- | --- |";
+  markdown_results = `| ${"Name".padEnd(kNameLength)} | ${"Expected".padEnd(
+    kExpectedLength
+  )} | ${"Got".padEnd(kGotLength)} | ${"Pass".padEnd(kPassLength)} |\n`;
+  markdown_results += `| ${"-".repeat(kNameLength)} | ${"-".repeat(kExpectedLength)} | ${"-".repeat(
+    kGotLength
+  )} | ${"-".repeat(kPassLength)} |`;
 
   kTests.forEach((cfg: TestConfig) => {
     RunTest(cfg);
@@ -154,11 +163,16 @@ fn main(@builtin(global_invocation_id) gid: vec3u) {
   row += "</tr>";
   table.innerHTML += row;
 
-  markdown_results += `\n| ${cfg.name} | ${cfg.expected} | ${got} | ${passed ? "Pass" : "Fail"} |`;
+  markdown_results += `\n| ${cfg.name.padEnd(kNameLength)} | ${cfg.expected
+    .toString()
+    .padEnd(kExpectedLength)} | ${got.toString().padEnd(kGotLength)} | ${(passed
+    ? "Pass"
+    : "FAIL"
+  ).padEnd(kPassLength)} |`;
 }
 
 document.getElementById("copy-results").addEventListener("click", () => {
-  navigator.clipboard.writeText(markdown_results);
+  navigator.clipboard.writeText("```\n" + markdown_results + "\n```");
   document.getElementById("copied").style.display = "";
 });
 
