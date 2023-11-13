@@ -155,6 +155,7 @@ fn main(@builtin(global_invocation_id) gid: vec3u) {
   row += `<td>${cfg.expected}</td>`;
   row += `<td>${got}</td>`;
   row += `<td style="color: ${passed ? "green" : "red"}">${passed ? "Pass" : "Fail"}</td>`;
+  row += `<td style="font-family: monospace">${cfg.code}</td>`;
   row += "</tr>";
   table.innerHTML += row;
 
