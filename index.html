@@ -7,15 +7,38 @@
       #status {
         font-weight: bold;
       }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      td,
+      th {
+        padding-left: 5px;
+        padding-right: 15px;
+      }
     </style>
   </head>
   <body>
     This project contains a set of WGSL test shaders that exercise a bug with the lowering of
     llvm.usub.sat intrinsics on Apple Silicon.
+
     <br />
     <br />
 
     <label id="status"></label>
+
+    <br />
+    <br />
+
+    <table id="table">
+      <tr>
+        <th>Name</th>
+        <th>Expected</th>
+        <th>Got</th>
+        <th>Pass/Fail</th>
+      </tr>
+    </table>
 
     <script type="text/javascript" src="dist/test.js"></script>
   </body>
